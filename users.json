@@ -1,1 +1,32 @@
-[{"username": "Ivan228anonimus", "password": "IVlad_121206I", "email": "12IvanI@gmail.com", "id": ""}, {"username": "Ivan228anonimus", "password": "IVlad_121206I", "email": "12IvanI@gmail.com", "id": 22848}, {"username": "IVlad_121206I", "password": "12IvanI@gmail.com", "email": 22848, "id": "Ivan228anonimus"}, {"username": "test", "password": "test", "email": "test", "id": 648253536}, {"username": "Net", "password": "Net", "email": "Net", "id": 634132532}]
+[
+    {
+        "username": "Ivan228anonimus",
+        "password": "IVlad_121206I",
+        "email": "12IvanI@gmail.com",
+        "id": ""
+    },
+    {
+        "username": "Ivan228anonimus",
+        "password": "IVlad_121206I",
+        "email": "12IvanI@gmail.com",
+        "id": 22848
+    },
+    {
+        "username": "IVlad_121206I",
+        "password": "12IvanI@gmail.com",
+        "email": 22848,
+        "id": "Ivan228anonimus"
+    },
+    {
+        "username": "test",
+        "password": "test",
+        "email": "test",
+        "id": 648253536
+    },
+    {
+        "username": "Net",
+        "password": "Net",
+        "email": "Net",
+        "id": 634132532
+    }
+]

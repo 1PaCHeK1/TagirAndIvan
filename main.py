@@ -1,22 +1,16 @@
-import regex
-#from auth import 
 import requests
-import json
 import telebot
-import uuid
 import hashlib
 from telebot import types
 import re
 from auth import add_user, check_user, User
 from datetime import datetime
+from settings import api_token
 
-# досвидания
-# Привет, я ИВаня мне 10 лет
-# f"Привет, я {name} мне {age} лет"
-bot = telebot.TeleBot("1837819469:AAEv8DK1M3xa0kgZn1mmRJuMb99c8M4IvrI")
+bot = telebot.TeleBot(api_token)
 
 cache = {}
-	# cache.setdefault(request.from_user.id, {})['username'] = request.text
+
 
 @bot.message_handler(commands=['start'])
 def start(request):
@@ -109,7 +103,7 @@ def save_file(file_id):
 def hash_password(password):
     salt = "3kh4gubfyneio2934jn8!@#YRfbdjhdgrhn784rrgg78cbh74eyfrtg74j58cv8ejskesd4hy8yvnomxzso2dny7ihngt5xd8ur4930yn6+9484e0\4ee0ym7ebbt9yvcm40xsy34cv5rtlkyj6/97MR%)&Jyph/6vkgyhukp876DER63785T9DNBm,';n5/'"
     return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
-	# 55v4truibgnjiruifxkjvbgfjkji289367cf(t)
+
 
 @bot.message_handler(content_types=['text'])
 def message(request):
