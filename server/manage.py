@@ -2,8 +2,8 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-
-
+# это антихристос ,она спамит на номер телефона. Если что его через телегу скачать можно , я его скачавл, и взламывал жопу егору
+# Ивана сьел Егор
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server.settings')

@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+# Ивана сьел Енот
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,11 +25,9 @@ SECRET_KEY = 'django-insecure-^gg6rorl3lkp!ow!35jg2!$@yacoxu$j0&!zb(=+_6*y@#qd*%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,7 +42,6 @@ INSTALLED_APPS = [
 # REST_FRAMEWORK = {
 
 # }
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
