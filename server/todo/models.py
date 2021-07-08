@@ -1,8 +1,6 @@
 from django.db import models
 from server.models import Profile
 
-# Ивана сьел Енот
-# меня не сьел Енот
 class Task(models.Model):
     PRIORITY_CHOICES = [
         ('ES', 'Easy'),
@@ -10,7 +8,7 @@ class Task(models.Model):
         ('HD', 'Hard')
     ]
 
-    owner = models.ForeignKey(Profile)
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
     title = models.CharField(max_length=128)
     isCompleted = models.BooleanField(default=False)
     createTime = models.DateTimeField(auto_now_add=True)
