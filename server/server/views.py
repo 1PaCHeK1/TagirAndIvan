@@ -5,4 +5,4 @@ from rest_framework.decorators import api_view
 @api_view(['GET'])
 def test(request):
     print(request)
-    return Response({'username' : "vasya"}, status=200)
+    return Response({'username' : "vasua"}, status=200)
