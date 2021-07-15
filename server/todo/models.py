@@ -12,7 +12,7 @@ class Task(models.Model):
     title = models.CharField(max_length=128)
     isCompleted = models.BooleanField(default=False)
     createTime = models.DateTimeField(auto_now_add=True)
-    deadline = models.DateTimeField(blank=True)
+    deadline = models.DateTimeField(blank=True, null=True)
     description = models.CharField(max_length=256, blank=True)
     priority = models.CharField(max_length=2, 
         choices=PRIORITY_CHOICES,
