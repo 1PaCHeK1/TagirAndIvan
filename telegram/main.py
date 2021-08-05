@@ -1,16 +1,16 @@
-import requests
-import telebot
 import hashlib
-from telebot import types
 import re
-from auth import add_user, check_user, User
 from datetime import datetime
+
+from telebot import types
+
+import tg_vlad
+from connector import bot
+from auth import User, add_user, check_user
 from settings import api_token
 
-bot = telebot.TeleBot(api_token)
 
 cache = {}
-
 
 @bot.message_handler(commands=['start'])
 def start(request):
