@@ -104,7 +104,6 @@ def hash_password(password):
     salt = "3kh4gubfyneio2934jn8!@#YRfbdjhdgrhn784rrgg78cbh74eyfrtg74j58cv8ejskesd4hy8yvnomxzso2dny7ihngt5xd8ur4930yn6+9484e0\4ee0ym7ebbt9yvcm40xsy34cv5rtlkyj6/97MR%)&Jyph/6vkgyhukp876DER63785T9DNBm,';n5/'"
     return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
 
-
 @bot.message_handler(content_types=['text'])
 def message(request):
 	return bot.send_message(request.chat.id, "Я тебя не понимаю")

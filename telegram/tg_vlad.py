@@ -4,6 +4,7 @@ import requests
 from telebot import types
 from connector import bot
 from settings import host
+import json
 
 @bot.message_handler(commands=['create-todo'])
 def create_todo(request):
@@ -75,6 +76,16 @@ def registration_vkid(request, user_data):
         response = requests.post(host + 'registration/', data=user_data)
         print(response.status_code, response.content)
     except requests.exceptions.ConnectionError:
-        return bot.send_message(request.chat.id, f"Возникла попробуйте позже!")
+        return bot.send_message(request.chat.id, f"Возникла ошибка попробуйте позже!")
         
     return bot.send_message(request.chat.id, f"Аккаунт успешно создан!")
+
+@bot.message_handler(commands=['todos'])
+def get_todos(request):
+    user_data = {'tg_id' : request.from_user.id}
+    try:
+        response = requests.get(host + 'todo/', data=user_data)
+        print(json.loads(response.content), response.status_code)
+        return bot.send_message(request.chat.id, f"Я посмотрел твои заметки, все хорошо!")
+    except requests.exceptions.ConnectionError:
+        return bot.send_message(request.chat.id, f"Возникла ошибка попробуйте позже!")
