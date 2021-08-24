@@ -54,9 +54,15 @@ def create_todo_deadline(request, user_data):
         )
 
 def create_todo_complete(request, user_data):
-    # Добавление Todo
-    print(user_data)
-    return bot.send_message(request.chat.id, f"ToDo: {user_data['title']}\nУспешно создан!")
+    try:
+        response = requests.post(host + 'todo/create/', data=user_data)
+    except:
+        return bot.send_message(request.chat.id, f"ToDo: {user_data['title']}\nНе создано!")
+    else:
+        if response.status_code == 201:
+            return bot.send_message(request.chat.id, f"ToDo: {user_data['title']}\nУспешно создан!")
+        else:
+            return bot.send_message(request.chat.id, f"ToDo: {user_data['title']}\nНе создано!")
 
 @bot.message_handler(commands=['signup'])
 def registration(request):
@@ -89,3 +95,18 @@ def get_todos(request):
         return bot.send_message(request.chat.id, f"Я посмотрел твои заметки, все хорошо!")
     except requests.exceptions.ConnectionError:
         return bot.send_message(request.chat.id, f"Возникла ошибка попробуйте позже!")
+
+@bot.message_handler(commands=['complete'])
+def complete_todo(request):
+    response = requests.get(host + 'todo/', data={'tg_id' : request.from_user.id})
+    data = [ (i['id'], i['title']) for i in json.loads(response.content)['data'] if i['isCompleted']]
+    keyboard = types.InlineKeyboardMarkup()
+    for id, title  in data:
+        keyboard.add(types.InlineKeyboardButton(title, callback_data=id))
+    
+    return bot.send_message(request.chat.id, f"Выбери Todo которое ты уже выполнил", reply_markup=keyboard)
+
+
+@bot.callback_query_handler(func=lambda call: call.data is int)
+def callback_inline(call):
+    print(call, call.data)
