@@ -15,6 +15,7 @@ class CreateTask(unittest.TestCase):
         # response = r.post("http://localhost:8000/todo/create/", json={'tg_id' : 1, 'title' : ''})
         # self.assertEqual(response.status_code, 400)
         self._test("http://localhost:8000/todo/create/", {'tg_id' : 1, 'title' : ''}, 400)
+    
     def test_createtask(self):
         # response = r.post("http://localhost:8000/todo/create/", json={'tg_id' : 1, 'title' : 'test'})
         # self.assertEqual(response.status_code, 200)

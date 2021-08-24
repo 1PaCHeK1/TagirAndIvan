@@ -1,3 +1,4 @@
+from django.http import response
 import telebot
 
 import requests
@@ -11,7 +12,7 @@ def create_todo(request):
     msg = bot.send_message(request.chat.id, 'Введите название ToDo')
     return bot.register_next_step_handler(msg, 
         lambda request : create_todo_title(request, 
-            {'id' : request.from_user.id})
+            {'tg_id' : request.from_user.id})
     )
 
 def create_todo_title(request, user_data):
@@ -99,14 +100,22 @@ def get_todos(request):
 @bot.message_handler(commands=['complete'])
 def complete_todo(request):
     response = requests.get(host + 'todo/', data={'tg_id' : request.from_user.id})
-    data = [ (i['id'], i['title']) for i in json.loads(response.content)['data'] if i['isCompleted']]
-    keyboard = types.InlineKeyboardMarkup()
+    data = [ (i['id'], i['title']) for i in json.loads(response.content)['data'] if not i['isCompleted']]
+    print(data)
+    keyboard = types.InlineKeyboardMarkup(row_width=len(data))
     for id, title  in data:
         keyboard.add(types.InlineKeyboardButton(title, callback_data=id))
     
     return bot.send_message(request.chat.id, f"Выбери Todo которое ты уже выполнил", reply_markup=keyboard)
 
 
-@bot.callback_query_handler(func=lambda call: call.data is int)
+@bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
-    print(call, call.data)
+    response = requests.post(host + 'todo/update/', data={
+        'tg_id' : call.from_user.id,
+        'task_id' : call.data,
+        'isCompleted' : True
+    })
+
+    bot.answer_callback_query(callback_query_id=call.id, show_alert=False,
+        text="Статус изменен")

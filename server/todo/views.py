@@ -28,6 +28,7 @@ class CreateTodoView(APIView):
     def post(self, request):
         tg_id = request.data.get('tg_id', -1)
         vk_id = request.data.get('vk_id', -1)
+        print(request.data)
         user = Profile.objects.get(Q(telegram_id=tg_id) | Q(vk_id=vk_id))
         if 'title' not in request.data or request.data['title'] == '':
             return Response(status=400)
