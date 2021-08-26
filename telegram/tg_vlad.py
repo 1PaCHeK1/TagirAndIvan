@@ -92,28 +92,53 @@ def get_todos(request):
     user_data = {'tg_id' : request.from_user.id}
     try:
         response = requests.get(host + 'todo/', data=user_data)
-        print(json.loads(response.content), response.status_code)
-        return bot.send_message(request.chat.id, f"Я посмотрел твои заметки, все хорошо!")
+        data = json.loads(response.content)['data'] #list[Todo]
+        result_str = '\n'.join([ f"{index+1:<3} " + todo['title'] + ' ' + ('✅' if todo['isCompleted'] else '❎')
+            for index, todo in enumerate(data)])
+
+        return bot.send_message(request.chat.id, result_str)
     except requests.exceptions.ConnectionError:
         return bot.send_message(request.chat.id, f"Возникла ошибка попробуйте позже!")
+    except:
+        return bot.send_message(request.chat.id, f"У вас нет Todo")
 
 @bot.message_handler(commands=['complete'])
 def complete_todo(request):
     response = requests.get(host + 'todo/', data={'tg_id' : request.from_user.id})
     data = [ (i['id'], i['title']) for i in json.loads(response.content)['data'] if not i['isCompleted']]
-    print(data)
     keyboard = types.InlineKeyboardMarkup(row_width=len(data))
     for id, title  in data:
-        keyboard.add(types.InlineKeyboardButton(title, callback_data=id))
+        keyboard.add(types.InlineKeyboardButton(title, callback_data=f'complete{id}'))
     
     return bot.send_message(request.chat.id, f"Выбери Todo которое ты уже выполнил", reply_markup=keyboard)
 
+@bot.message_handler(commands=['delete'])
+def delete_todo(request):
+    response = requests.get(host + 'todo/', data={'tg_id' : request.from_user.id})
+    data = [ (i['id'], i['title']) for i in json.loads(response.content)['data']]
+    keyboard = types.InlineKeyboardMarkup(row_width=len(data))
+    for id, title  in data:
+        keyboard.add(types.InlineKeyboardButton(title, callback_data=f'delete{id}'))
+    
+    return bot.send_message(request.chat.id, f"Выбери Todo которое ты хочешь удалить", reply_markup=keyboard)
 
-@bot.callback_query_handler(func=lambda call: True)
+
+@bot.callback_query_handler(func=lambda call: 'delete' in call.data)
+def callback_inline(call):
+    response = requests.post(host + 'todo/delete/', data={
+        'tg_id' : call.from_user.id,
+        'task_id' : int(call.data.replace('delete', ''))
+    })
+
+    bot.answer_callback_query(callback_query_id=call.id, show_alert=False,
+        text="Todo удалён")
+
+
+@bot.callback_query_handler(func=lambda call: 'complete' in call.data)
 def callback_inline(call):
     response = requests.post(host + 'todo/update/', data={
         'tg_id' : call.from_user.id,
-        'task_id' : call.data,
+        'task_id' : int(call.data.replace('complete', '')),
         'isCompleted' : True
     })
 
